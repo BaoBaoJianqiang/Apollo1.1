@@ -1,0 +1,1 @@
+include ':ActivityHook1', ':TestActivity'

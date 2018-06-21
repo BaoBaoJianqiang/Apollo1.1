@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ActivityHook1</string>
+
+    <string name="string1">Test String</string>
+</resources>
