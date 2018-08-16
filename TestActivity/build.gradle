@@ -17,19 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def file = output.outputFile
-            output.outputFile = new File(file.parent,
-                    "testactivity.apk")
-
-            copy {
-                from "$buildDir/outputs/apk/testactivity.apk"
-                into "$rootDir/ActivityHook1/src/main/assets"
-            }
-        }
-    }
 }
 
 dependencies {
@@ -39,4 +26,21 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.2.0'
     testCompile 'junit:junit:4.12'
+}
+
+assemble.doLast {
+    android.applicationVariants.all { variant ->
+        // Copy Release artifact to HostApp's assets and rename
+        if (variant.name == "release") {
+            variant.outputs.each { output ->
+                File originFile = output.outputFile
+                println originFile.absolutePath
+                copy {
+                    from originFile
+                    into "$rootDir/ActivityHook1/src/main/assets"
+                    rename(originFile.name, "testactivity.apk")
+                }
+            }
+        }
+    }
 }
